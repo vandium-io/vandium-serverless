@@ -40,7 +40,7 @@ describe( 'RuntimeNode43Vandium', function() {
 
         expect( plugin.getName( 'aws' ) ).to.equal( 'nodejs4.3' );
 
-        expect( plugin.getName( 'fred' ) ).to.equal( 'nodejs4.3-vandium' );
+        expect( plugin.getName( 'other' ) ).to.equal( 'nodejs4.3-vandium' );
 
         let func = {
 
