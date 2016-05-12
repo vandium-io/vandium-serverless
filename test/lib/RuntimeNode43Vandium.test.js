@@ -38,6 +38,10 @@ describe( 'RuntimeNode43Vandium', function() {
 
         expect( plugin ).to.be.an.instanceof( RuntimeNode43 );
 
+        expect( plugin.getName( 'aws' ) ).to.equal( 'nodejs4.3' );
+
+        expect( plugin.getName( 'fred' ) ).to.equal( 'nodejs4.3-vandium' );
+
         let func = {
 
             save: sinon.stub().returns( Promise.resolve( 'save!' ) ),
