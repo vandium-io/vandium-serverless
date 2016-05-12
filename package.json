@@ -1,12 +1,12 @@
 {
   "name": "vandium-serverless",
   "version": "0.1.0",
-  "engines": {
-    "node": ">=4.0"
-  },
   "description": "Serverless plugin",
   "author": "Vandium Software Inc.",
   "license": "BSD-3-Clause",
+  "engines": {
+    "node": ">=4.3.2"
+  },
   "repository": {
     "type": "git",
     "url": "http://github.com/vandium-io/vandium-serverless"
@@ -21,23 +21,26 @@
     "aws lambda",
     "amazon",
     "amazon web services",
-    "serverless.com"
+    "serverless.com",
+    "vandium",
+    "vandium-node"
   ],
   "main": "index.js",
   "bin": {},
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive",
-    "coverage": "./node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive"
+    "coverage": "./node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive",
+    "postinstall": "npm install vandium"
+  },
+  "dependencies": {
+    "bluebird": "^3.0.6"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "istanbul": "^0.4.3",
     "mocha": "^2.4.5",
     "proxyquire": "^1.7.9",
-    "sinon": "^1.17.4"
-  },
-  "dependencies": {
-    "bluebird": "^3.0.6",
+    "sinon": "^1.17.4",
     "vandium": "^2.4.0"
   }
 }
