@@ -29,8 +29,7 @@
   "bin": {},
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive",
-    "coverage": "./node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive",
-    "postinstall": "npm install vandium"
+    "coverage": "./node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive"
   },
   "dependencies": {
     "bluebird": "^3.0.6"
