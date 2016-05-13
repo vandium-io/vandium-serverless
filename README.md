@@ -2,7 +2,9 @@
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 
-[Serverless](https://www.serverless.com) plugin allowing you to create new NodeJS 4.3 functions automatically wrapped with [vandium](http://vandium.io).
+[Serverless](https://www.serverless.com) plugin allowing you to create new Node.js 4.3 functions automatically wrapped with [vandium](http://vandium.io).
+
+Vandium simplifies writing AWS Lambda functions using Node.js for API Gateway, IoT applications, and other serverless event cases.
 
 ## Features
 
@@ -10,7 +12,7 @@
 * No need to remember wrap your Serverless functions in vandium manually
 * Easy to use
 * Integrates with Serverless Framework for AWS Lambda
-* Supports Node JS 4.3.2
+* Supports Node.js 4.3.2
 
 ## Installation
 
@@ -44,7 +46,7 @@ Serverless: Please, select a runtime for this new Function
     nodejs (v0.10, soon to be deprecated)
 ```
 
-Your newly created function is a standard NodeJS 4.3 function wrapped with vandium.
+Your newly created function is a standard Node.js 4.3 function wrapped with vandium.
 
 ```js
 'use strict';
