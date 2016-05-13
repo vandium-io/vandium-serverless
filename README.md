@@ -1,11 +1,16 @@
 # vandium-serverless
 
-[Serverless](https://www.serverless.com) plugin allowing you to create new NodeJS 4.3 functions automatically wrapped with [vandium](https://www.vandium.io).
+[![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
+
+[Serverless](https://www.serverless.com) plugin allowing you to create new NodeJS 4.3 functions automatically wrapped with [vandium](http://vandium.io).
 
 ## Features
 
-* Creates Serverless NodeJS 4.3 functions pre-wrapped with vanidum
+* Creates Serverless functions pre-wrapped with vanidum
 * No need to remember wrap your Serverless functions in vandium manually
+* Easy to use
+* Integrates with Serverless Framework for AWS Lambda
+* Supports Node JS 4.3.2
 
 ## Installation
 
@@ -17,7 +22,7 @@ npm install vandium-serverless --save
 
 * Edit your ```s-project.json``` to include the ```vandium-serverless``` plugin.
 
-```
+```json
 {
   "name": "yourprojectname",
   "custom": {},
@@ -41,7 +46,7 @@ Serverless: Please, select a runtime for this new Function
 
 Your newly created function is a standard NodeJS 4.3 function wrapped with vandium.
 
-```
+```js
 'use strict';
 
 const vandium = require( 'vandium' );
@@ -63,7 +68,7 @@ module.exports.handler = vandium( function( event, context, callback ) {
     callback( null, 'Your Vandium wrapped Serverless function ran succesfully!!!' );
 });
 ```
-Vandium offers features such as input validation, SQL Injection detection, and JWT authentication. For a full list of features and instructions checkout [vandium](https://www.vandium.io) on [GitHub](https://www.github.com/vandium-io/vandium-node) or [npm](https://www.npmjs.com/package/vandium).
+Vandium offers features such as input validation, SQL Injection detection, and JWT authentication. For a full list of features and instructions visit the  [vandium](http://vandium.io) project page.
 
 ## Packaging
 
