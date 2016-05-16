@@ -3,19 +3,16 @@
   "version": "1.0.0",
   "description": "Serverless plugin",
   "author": "Vandium Software Inc.",
-  "license": "BSD-3-Clause",
   "engines": {
     "node": ">=4.3.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/vandium-io/vandium-serverless"
   },
   "keywords": [
     "serverless framework plugin",
     "serverless applications",
     "serverless plugins",
+    "serverless",
     "api gateway",
+    "api",
     "lambda",
     "aws",
     "aws lambda",
@@ -23,13 +20,22 @@
     "amazon web services",
     "serverless.com",
     "vandium",
-    "vandium-node"
+    "vandium-node",
+    "security",
+    "deployment",
+    "validation",
+    "jwt",
+    "sqli",
+    "sql injection attack"
   ],
   "main": "index.js",
-  "bin": {},
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive",
     "coverage": "./node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- -R spec --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/vandium-io/vandium-serverless"
   },
   "dependencies": {
     "bluebird": "^3.0.6"
@@ -41,5 +47,6 @@
     "proxyquire": "^1.7.9",
     "sinon": "^1.17.4",
     "vandium": "^2.4.0"
-  }
+},
+  "license": "BSD-3-Clause"
 }
