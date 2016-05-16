@@ -1,6 +1,8 @@
 # vandium-serverless
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
+[![Build Status](https://travis-ci.org/vandium-io/vandium-serverless.svg?branch=master)](https://travis-ci.org/vandium-io/vandium-serverless)
+[![npm version](https://badge.fury.io/js/vandium-serverless.svg)](https://badge.fury.io/js/vandium-serverless)
 
 [Serverless](https://www.serverless.com) plugin allowing you to create new Node.js 4.3 functions automatically wrapped with [vandium](http://vandium.io).
 
