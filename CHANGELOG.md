@@ -1,5 +1,5 @@
 # Change Log
 
-## 0.1.0 (TBD)
+## 1.0.0 (2016-05-16)
 
 Initial Release
