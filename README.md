@@ -9,6 +9,7 @@
 ## Features
 
 * Creates Serverless functions pre-wrapped with vanidum
+* Adds HTTP response codes specific to vandium error conditions
 * No need to remember wrap your Serverless functions in vandium manually
 * Easy to use
 * Integrates with Serverless Framework for AWS Lambda
