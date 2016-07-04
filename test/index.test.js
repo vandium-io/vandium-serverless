@@ -10,15 +10,20 @@ describe( 'index.js', function() {
 
     let runtimeNode43VandiumStub;
 
+    let endpointVandiumStub;
+
     let indexModule;
 
     before( function() {
 
         runtimeNode43VandiumStub = sinon.stub().returns( 'runtimeNode43VandiumStub' );
 
+        endpointVandiumStub = sinon.stub().returns( 'endpointVandiumStub' );
+
         indexModule = proxyquire( '../index', {
 
-            './lib/RuntimeNode43Vandium': runtimeNode43VandiumStub
+            './lib/RuntimeNode43Vandium': runtimeNode43VandiumStub,
+            './lib/EndpointVandium': endpointVandiumStub
         });
     });
 
@@ -33,6 +38,12 @@ describe( 'index.js', function() {
 
         indexModule( serverlessStub );
 
-        expect( serverlessStub ).to.eql( { classes: { RuntimeNode43Vandium: 'runtimeNode43VandiumStub' } } );
+        let classes = {
+
+            RuntimeNode43Vandium: 'runtimeNode43VandiumStub',
+            Endpoint: 'endpointVandiumStub'
+        };
+
+        expect( serverlessStub ).to.eql( { classes } );
     });
 });
