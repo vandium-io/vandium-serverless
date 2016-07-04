@@ -40,7 +40,7 @@ module.exports = function( S ) {
 
                 const funcData = {
 
-                    name: S.utils.readFileSync( filePath).name ,
+                    name: S.utils.readFileSync( filePath ).name ,
                     runtime: evt.options.runtime
                 };
 
