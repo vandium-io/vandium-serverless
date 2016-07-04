@@ -33,17 +33,17 @@ describe( 'EndpointVandium', function() {
 
         let func = { runtime: 'nodejs4.3-vandium' };
 
-        let plugin = new pluginClass( {}, func );
+        let plugin = new pluginClass( undefined, func );
 
         let http403 = {
 
-            selectionPattern: '^authentication failure.*',
+            selectionPattern: '^authentication error.*',
             statusCode: '403'
         };
 
         let http422 = {
 
-            selectionPattern: '^validation failure.*',
+            selectionPattern: '^validation error.*',
             statusCode: '422'
         };
 
@@ -63,7 +63,7 @@ describe( 'EndpointVandium', function() {
 
         let func = { runtime: 'nodejs4.3' };
 
-        let plugin = new pluginClass( {}, func );
+        let plugin = new pluginClass( undefined, func );
 
         expect( plugin ).to.be.an.instanceof( Endpoint );
         expect( plugin.responses ).to.exist;
