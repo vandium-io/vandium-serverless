@@ -37,13 +37,13 @@ describe( 'EndpointVandium', function() {
 
         let http403 = {
 
-            selectionPattern: 'authentication.*',
+            selectionPattern: '^authentication failure.*',
             statusCode: '403'
         };
 
         let http422 = {
 
-            selectionPattern: 'validation.*',
+            selectionPattern: '^validation failure.*',
             statusCode: '422'
         };
 
