@@ -41,10 +41,18 @@ describe( 'EndpointVandium', function() {
             statusCode: '403'
         };
 
+        let http422 = {
+
+            selectionPattern: 'validation.*',
+            statusCode: '422'
+        };
+
         expect( plugin ).to.be.an.instanceof( Endpoint );
         expect( plugin.responses ).to.exist;
         expect( plugin.responses[ '403' ]).to.exist;
         expect( plugin.responses[ '403' ]).to.eql( http403 );
+        expect( plugin.responses[ '422' ]).to.exist;
+        expect( plugin.responses[ '422' ]).to.eql( http422 );
     });
 
     it( 'other runtime', function() {
@@ -60,5 +68,6 @@ describe( 'EndpointVandium', function() {
         expect( plugin ).to.be.an.instanceof( Endpoint );
         expect( plugin.responses ).to.exist;
         expect( plugin.responses[ '403' ]).to.not.exist;
+        expect( plugin.responses[ '422' ]).to.not.exist;
     });
 });
