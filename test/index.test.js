@@ -1,4 +1,5 @@
 'use strict';
+/*jshint expr: true*/
 
 const sinon = require( 'sinon' );
 
@@ -14,7 +15,7 @@ describe( 'index.js', function() {
 
     let indexModule;
 
-    before( function() {
+    beforeEach( function() {
 
         runtimeNode43VandiumStub = sinon.stub().returns( 'runtimeNode43VandiumStub' );
 
@@ -27,23 +28,37 @@ describe( 'index.js', function() {
         });
     });
 
-    it( 'normal operation', function() {
+    it( 'set the serverless classes to our new classes', function() {
 
         let serverlessStub = {
 
             classes: {
 
+                    Plugin: class Plugin {}
                 }
             }
 
         indexModule( serverlessStub );
 
-        let classes = {
+        expect( serverlessStub.classes ).to.exist;
+        expect( serverlessStub.classes.RuntimeNode43Vandium ).to.exist;
+        expect( serverlessStub.classes.RuntimeNode43Vandium ).to.equal( 'runtimeNode43VandiumStub' );
+        expect( serverlessStub.classes.Endpoint ).to.exist;
+        expect( serverlessStub.classes.Endpoint ).to.equal( 'endpointVandiumStub' );
+    });
 
-            RuntimeNode43Vandium: 'runtimeNode43VandiumStub',
-            Endpoint: 'endpointVandiumStub'
-        };
+    it( 'create a new instance of our plugin', function() {
 
-        expect( serverlessStub ).to.eql( { classes } );
+        // TODO expect the constructor to name our plugin
+    });
+
+    it( 'add our plugin as a hook after the function create action has run', function() {
+
+        // TODO expect that addHook has been called with our plugin
+    });
+
+    it( 'run our plugin hook method', function() {
+
+        // TODO expect that we read the s-function.json and wrote it again with the runtime (and the vandium removed)
     });
 });
