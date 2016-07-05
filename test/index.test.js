@@ -1,47 +1,43 @@
 'use strict';
 /*jshint expr: true*/
 
+
 const sinon = require( 'sinon' );
 
 const proxyquire = require( 'proxyquire' );
 
 const expect = require( 'chai' ).expect;
 
+
 describe( 'index.js', function() {
 
     let runtimeNode43VandiumStub;
-
-    let endpointVandiumStub;
 
     let indexModule;
 
     let addHookStub = sinon.stub();
 
-    let readFileSyncStub = sinon.stub().returns( { name: 'MyLambdaFunction' } );
+    let readFileSyncStub = sinon.stub().returns( { runtime: 'nodejs4.3' } );
+
+    let writeFileSyncStub = sinon.stub();
 
     let getRootPathStub = sinon.stub().returns( '/this/is/a/full/path' );
 
-    let saveStub = sinon.stub();
-
-    let FunctionStub = sinon.stub().returns( {
-
-        save: saveStub
-    });
-
+    const evt = { options: { path: '/this/is/a/path' } };
 
     let serverlessStub = {
 
         classes: {
 
-            Plugin: class Plugin {},
-            Function: FunctionStub
+            Plugin: class Plugin {}
         },
 
         addHook: addHookStub,
 
         utils: {
 
-            readFileSync: readFileSyncStub
+            readFileSync: readFileSyncStub,
+            writeFileSync: writeFileSyncStub
         },
 
         getProject: function() {
@@ -53,18 +49,17 @@ describe( 'index.js', function() {
         }
     };
 
+
     beforeEach( function() {
 
         runtimeNode43VandiumStub = sinon.stub().returns( 'runtimeNode43VandiumStub' );
 
-        endpointVandiumStub = sinon.stub().returns( 'endpointVandiumStub' );
-
         indexModule = proxyquire( '../index', {
 
-            './lib/RuntimeNode43Vandium': runtimeNode43VandiumStub,
-            './lib/EndpointVandium': endpointVandiumStub
+            './lib/RuntimeNode43Vandium': runtimeNode43VandiumStub
         });
     });
+
 
     it( 'set the serverless classes to our new classes', function() {
 
@@ -73,9 +68,8 @@ describe( 'index.js', function() {
         expect( serverlessStub.classes ).to.exist;
         expect( serverlessStub.classes.RuntimeNode43Vandium ).to.exist;
         expect( serverlessStub.classes.RuntimeNode43Vandium ).to.equal( 'runtimeNode43VandiumStub' );
-        expect( serverlessStub.classes.Endpoint ).to.exist;
-        expect( serverlessStub.classes.Endpoint ).to.equal( 'endpointVandiumStub' );
     });
+
 
     it( 'create a new instance of our plugin', function() {
 
@@ -83,6 +77,7 @@ describe( 'index.js', function() {
 
         expect( vandiumServerless.name ).to.equal( 'VandiumServerless' );
     });
+
 
     it( 'add our plugin as a hook after the function create action has run', function( done ) {
 
@@ -96,18 +91,10 @@ describe( 'index.js', function() {
         done();
     });
 
-    it( 'run our plugin hook method with vandium', function() {
+
+    it( 'run our plugin hook method without vandium', function() {
 
         let vandiumServerless = new ( indexModule( serverlessStub ) ) ();
-
-        let evt = {
-
-            options: {
-
-                path: 'this/is/a/path',
-                runtime: 'nodejs4.3-vandium'
-            }
-        };
 
         vandiumServerless._hookPost( evt );
 
@@ -116,34 +103,87 @@ describe( 'index.js', function() {
         expect( getRootPathStub.firstCall.args[ 1 ] ).to.equal( 's-function.json' );
         expect( readFileSyncStub.calledOnce ).to.be.true;
         expect( readFileSyncStub.firstCall.args[ 0 ] ).to.equal( '/this/is/a/full/path' );
-        expect( FunctionStub.calledOnce ).to.be.true;
 
-        expect( FunctionStub.firstCall.args[ 0 ] ).to.eql( {
-
-            name: 'MyLambdaFunction',
-            runtime: 'nodejs4.3'
-        });
-
-        expect( FunctionStub.firstCall.args[ 1 ] ).to.equal( '/this/is/a/full/path' );
-        expect( saveStub.calledOnce ).to.be.true;
-        expect( evt.options.runtime ).to.equal( 'nodejs4.3' );
+        expect( writeFileSyncStub.lastCall.args[ 1 ] ).to.eql( { runtime: 'nodejs4.3' } );
     });
 
-    it( 'run our plugin hook method without vandium', function() {
+
+    it( 'run our plugin hook method with vandium but no endpoint', function() {
+
+        serverlessStub.utils.readFileSync = sinon.stub().returns( { runtime: 'nodejs4.3-vandium', endpoints: [] } );
 
         let vandiumServerless = new ( indexModule( serverlessStub ) ) ();
 
-        let evt = {
+        vandiumServerless._hookPost( evt );
 
-            options: {
+        expect( writeFileSyncStub.lastCall.args[ 1 ] ).to.eql( { runtime: 'nodejs4.3', endpoints: [] } );
+    });
 
-                path: '/this/is/a/path',
-                runtime: 'nodejs4.3'
-            }
+
+    it( 'run our plugin hook method with vandium and an endpoint', function() {
+
+        serverlessStub.utils.readFileSync = sinon.stub().returns( {
+
+            runtime: 'nodejs4.3-vandium',
+            endpoints: [ {
+                responses: {
+                    '400': {
+                        statusCode: '400'
+                    }
+                }
+            }]
+        });
+
+        let http403 = {
+
+            selectionPattern: '^authentication error.*',
+            statusCode: '403'
         };
+
+        let http422 = {
+
+             selectionPattern: '^validation error.*',
+             statusCode: '422'
+        };
+
+        let vandiumServerless = new ( indexModule( serverlessStub ) ) ();
 
         vandiumServerless._hookPost( evt );
 
-        expect( evt.options.runtime ).to.equal( 'nodejs4.3' );
+        expect( writeFileSyncStub.lastCall.args[ 1 ].endpoints[ 0 ] ).to.exist;
+        expect( writeFileSyncStub.lastCall.args[ 1 ].endpoints[ 0 ].responses ).to.exist;
+        expect( writeFileSyncStub.lastCall.args[ 1 ].endpoints[ 0 ].responses[ '400' ] ).to.eql( { statusCode: '400' } );
+        expect( writeFileSyncStub.lastCall.args[ 1 ].endpoints[ 0 ].responses[ '403' ] ).to.eql( http403 );
+        expect( writeFileSyncStub.lastCall.args[ 1 ].endpoints[ 0 ].responses[ '422' ] ).to.eql( http422 );
+    });
+
+    it( 'run our plugin hook method with vandium and a empty endpoint', function() {
+
+        serverlessStub.utils.readFileSync = sinon.stub().returns( {
+
+            runtime: 'nodejs4.3-vandium',
+            endpoints: [ {} ]
+        });
+
+        let http403 = {
+
+            selectionPattern: '^authentication error.*',
+            statusCode: '403'
+        };
+
+        let http422 = {
+
+             selectionPattern: '^validation error.*',
+             statusCode: '422'
+        };
+
+        let vandiumServerless = new ( indexModule( serverlessStub ) ) ();
+
+        vandiumServerless._hookPost( evt );
+
+        expect( writeFileSyncStub.lastCall.args[ 1 ].endpoints[ 0 ] ).to.exist;
+        expect( writeFileSyncStub.lastCall.args[ 1 ].endpoints[ 0 ].responses ).to.exist;
+        expect( writeFileSyncStub.lastCall.args[ 1 ].endpoints[ 0 ].responses[ '403' ] ).to.eql( http403 );
+        expect( writeFileSyncStub.lastCall.args[ 1 ].endpoints[ 0 ].responses[ '422' ] ).to.eql( http422 );
     });
 });
