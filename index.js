@@ -9,7 +9,6 @@ const VALIDATION_FAILURE_CODE = '422';
 module.exports = function( S ) {
 
     S.classes.RuntimeNode43Vandium = require( './lib/RuntimeNode43Vandium' ) ( S ) ;
-    // S.classes.Endpoint = require( './lib/EndpointVandium' ) ( S ) ;
 
     return class VandiumServerless extends S.classes.Plugin {
 
